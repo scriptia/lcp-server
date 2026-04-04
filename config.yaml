@@ -1,0 +1,58 @@
+# LCP Server Configuration - Example
+# This file shows how to configure administrator accounts
+
+log_level: "debug"
+public_base_url: "http://localhost:8989"
+port: 8989
+# DSN examples:
+# SQLite: "sqlite:///data/lcp.db"
+# MySQL with Docker secret: "mysql://lcp_user:PASSWORD_PLACEHOLDER@tcp(mysql:3306)/lcpserver"
+#   (password will be read from /run/secrets/mysql-password if MYSQL_PASSWORD_FILE is set)
+# MySQL with direct password: "mysql://user:password@tcp(host:3306)/database"
+#dsn: "sqlite:///data/lcp.db"
+dsn: "mysql://lcp_user:PASSWORD_PLACEHOLDER@tcp(mysql:3306)/lcpserver"
+
+# Basic access configuration for LCP API
+access:
+  username: "username"
+  password: "password"
+
+# Certificates for license signing
+certificate:
+  cert: "/config/cert-production.pem"
+  private_key: "/config/privkey-production.pem"
+
+# License configuration
+license:
+  provider: "http://localhost:3000"
+  profile: "http://readium.org/lcp/basic-profile"
+  hint_link: "http:/localhost:3000/hint"
+
+# License status configuration
+status:
+  fresh_license_link: "http://localhost:3000/license/{license_id}"
+  allow_renew_on_expired_licenses: true
+  renew_default_days: 30
+  renew_max_days: 365
+  renew_link: "http://localhost:3000/renew/{license_id}"
+
+# Dashboard configuration
+dashboard:
+  excessive_sharing_threshold: 5
+  limit_to_last_12_months: true
+
+# JWT configuration and administrator accounts
+jwt:
+  # Secret key for signing JWT tokens (CHANGE THIS KEY IN PRODUCTION!)
+  secret_key: "your-super-secret-jwt-key-change-this-in-production-environment"
+  
+  # Administrator accounts for dashboard access
+  # Format: username: password
+  admin:
+    laurent: "secret"           # Main administrator
+    alice: "secret"             # Secondary administrator
+    manager: "manager123"       # Manager
+    operator: "op3rat0r!"       # Operator
+    support: "supp0rt_p@ss"     # Technical support
+
+resources: "/resources"
